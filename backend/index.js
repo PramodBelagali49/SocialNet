@@ -7,6 +7,7 @@ import express, { urlencoded } from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import connectDB from "./utils/connectDB.js"
+import userRoutes from "./routes/userRoutes.js"
 
 const app=express()
 // middlewares
@@ -20,15 +21,10 @@ const corsOptions={
 }
 app.use(cors(corsOptions));
 
+// Routes
+app.use("/api/user",userRoutes);
 
-app.get("/",(req,resp)=>{
-    return resp.status(200).json({
-        message:"I'm from backend",
-        success:true
-    })
-})
-
-const port=8000;
+const port=3600
 app.listen(port,()=>{
     connectDB();
     console.log(`server listening to port ${port}`);
