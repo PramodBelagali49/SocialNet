@@ -169,3 +169,58 @@ export const getCommentsOfPost=async(req,resp)=>{
         console.log(error);
     }
 }
+
+export const deletePost=async(req,resp)=>{
+    try {
+        const postId=req.params.id;
+        const authorId=req.id;
+
+        const post=await Post.findById(postId);
+        if(!post) return resp.status(400).json({message:"Post Not Found",success:false})
+            
+            // authorization of the owner of the post
+        if(post.author.toString() !== authorId) return resp.status(403).json({message:"You are NOT authorized to delete post"})
+            
+            // delete the post
+        await Post.findByIdAndDelete(postId);
+            
+            // remove the postId entry from the user's posts
+        const user=await User.findById(authorId);
+        user.posts=user.posts.filter(id => id.toString() != postId)
+        await user.save();
+
+            // delete the associated comments
+        await Comment.deleteMany({post:postId});
+
+        return resp.status(200).json({message:"Post deleted",success:true});
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const bookmarkPost=async(req,resp)=>{
+    try {
+        const postId=req.params.id;
+        const authorId=req.id;
+
+        const post=await Post.findById(postId)
+        if(!post) return resp.status(400).json({message:"Post Not Found",success:false})
+
+        const user=await User.findById(authorId);
+
+        if(user.bookmarks.includes(postId)){
+            // remove from bookmark
+            await User.updateOne({$pull:{bookmarks:post._id}})
+            await user.save()
+            return resp.status(200).json({type:"unsaved",message:"Post removed from bookmarks",success:true})
+        }else{
+            // Add to bookmark
+            await User.updateOne({$addToSet:{bookmarks:post._id}})
+            await user.save()
+            return resp.status(200).json({type:"saved",message:"Post bookmarked",success:true})
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
