@@ -2,6 +2,7 @@ import Post from "../models/post.js";
 import User from "../models/user.js";
 import sharp from "sharp"
 import cloudinary from "../utils/cloudinary_config.js";
+import Comment from "../models/comment.js";
 
 export const addPost=async(req,resp)=>{
     try {
@@ -42,9 +43,30 @@ export const addPost=async(req,resp)=>{
         console.log(error);
     }
 }
+
 export const getAllPosts=async(req,resp)=>{
     try {
         const posts=await Post.find({}).sort({createdAt:-1})
+            .populate({ path:"author",select:'username,profilePicture'})
+            .populate({
+                path:"comments",
+                sort:{createdAt:-1},
+                populate:{path:"author",select:"username,profilPicture"}
+            })
+        
+        return resp.status(200).json({
+            posts,
+            success:true
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getAuthorPosts=async(req,resp)=>{
+    try {
+        const authorId=req.id;
+        const posts=await Post.findById({author:authorId}).sort({createdAt:-1})
             .populate({ path:"author",select:'username,profilePicture'})
             .populate({
                 path:"comments",
