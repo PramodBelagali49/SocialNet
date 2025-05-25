@@ -121,3 +121,51 @@ export const unlikePost = async (req, resp) => {
         console.log(error);
     }
 }
+
+
+export const addComment=async(req,resp)=>{
+    try {
+        const userId=req.id;
+        const postId=req.params.id;
+        const post=await Post.findById(postId);
+        if(!post) return resp.status(400).json({message:"Post Not Found",success:false})
+
+        const text=req.body.text;
+        if(!text) return resp.status(404).json({message:"comment text required",success:false})
+
+        const comment=await Comment.create({
+            text,
+            author:userId,
+            post:postId
+        }).populate({
+            path:"author",
+            select:"username,profilePicture"
+        });
+        await comment.save();   //  check if it is required or not
+
+        post.comments.push(comment._id);
+        await post.save();
+
+        return resp.status(201).json({
+            message:"Comment added",
+            comment,
+            success:true
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getCommentsOfPost=async(req,resp)=>{
+    try {
+        const postId=req.params.id;
+        const userId=req.id;
+
+        const comments=await Comment.find({post:postId}).populate("author","username,profilePicture");
+        if(!comments) return resp.status(404).json({message:"No comments yet..",success:false});
+
+        return resp.status(200).json({comments,success:true})
+    } catch (error) {
+        console.log(error);
+    }
+}
