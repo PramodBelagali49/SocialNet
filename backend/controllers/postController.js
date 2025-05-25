@@ -82,3 +82,42 @@ export const getAuthorPosts=async(req,resp)=>{
         console.log(error);
     }
 }
+
+
+export const likePost = async (req, resp) => {
+    try {
+        const postId=req.params.id;
+        const userId=req.id;
+        const post=await Post.findById(postId);
+
+        if(!post) return resp.status(404).json({message:"Post Not Found",success:false})
+            // logic for like
+        await post.updateOne({$addToSet:{likes:userId}})
+        await post.save()
+
+            // implementation of Socket.io for RTN
+
+        return resp.status(200).json({message:"Post liked",success:true})
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const unlikePost = async (req, resp) => {
+    try {
+        const postId=req.params.id;
+        const userId=req.id;
+        const post=await Post.findById(postId);
+
+        if(!post) return resp.status(404).json({message:"Post Not Found",success:false})
+            // logic for unlike
+        await post.updateOne({$pull:{likes:userId}})
+        await post.save()
+
+            // implementation of Socket.io for RTN
+
+        return resp.status(200).json({message:"Post unliked",success:true})
+    } catch (error) {
+        console.log(error);
+    }
+}
