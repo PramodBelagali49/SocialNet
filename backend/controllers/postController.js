@@ -6,14 +6,17 @@ import Comment from "../models/comment.js";
 
 export const addPost=async(req,resp)=>{
     try {
-        const {caption}=req.body;
+        if(!req.body){
+            return resp.status(400).json({message:`req.body is required: ${req.body}`})
+        }
+        const caption=req.body.caption;
         const image=req.file;
         const authorId=req.id;
 
         if(!image) return resp.status(400).json({message:"Image is required"})
         
         const optimizedImageBuffer=await sharp(image.buffer)
-                                    .resize({width:"800",height:"800",fit:"inside"})
+                                    .resize({width:800,height:800,fit:"inside"})
                                     .toFormat('jpeg',{quality:80})
                                     .toBuffer();
 
@@ -32,7 +35,7 @@ export const addPost=async(req,resp)=>{
             await user.save();
         }
 
-        await post.populate({path:"author",select:"-password"});
+        await post.populate({path:"author",select:"-password -email"});
 
         return resp.status(201).json({
             message:"new post added",
@@ -47,11 +50,11 @@ export const addPost=async(req,resp)=>{
 export const getAllPosts=async(req,resp)=>{
     try {
         const posts=await Post.find({}).sort({createdAt:-1})
-            .populate({ path:"author",select:'username,profilePicture'})
+            .populate({ path:"author",select:'username profilePicture'})
             .populate({
                 path:"comments",
                 sort:{createdAt:-1},
-                populate:{path:"author",select:"username,profilPicture"}
+                populate:{path:"author",select:"username profilPicture"}
             })
         
         return resp.status(200).json({
@@ -66,12 +69,12 @@ export const getAllPosts=async(req,resp)=>{
 export const getAuthorPosts=async(req,resp)=>{
     try {
         const authorId=req.id;
-        const posts=await Post.findById({author:authorId}).sort({createdAt:-1})
-            .populate({ path:"author",select:'username,profilePicture'})
+        const posts=await Post.find({author:authorId}).sort({createdAt:-1})
+            .populate({ path:"author",select:'username profilePicture'})
             .populate({
                 path:"comments",
                 sort:{createdAt:-1},
-                populate:{path:"author",select:"username,profilPicture"}
+                populate:{path:"author",select:"username profilPicture"}
             })
         
         return resp.status(200).json({
@@ -129,26 +132,31 @@ export const addComment=async(req,resp)=>{
         const postId=req.params.id;
         const post=await Post.findById(postId);
         if(!post) return resp.status(400).json({message:"Post Not Found",success:false})
-
-        const text=req.body.text;
-        if(!text) return resp.status(404).json({message:"comment text required",success:false})
+        
+        if(!req.body){
+            return resp.status(400).json({message:`req.body is required: ${req.body}`})
+        }
+        
+        const {text}=req.body;
+        if(!text) return resp.status(400).json({message:"comment text required",success:false})
 
         const comment=await Comment.create({
             text,
             author:userId,
             post:postId
-        }).populate({
+        })
+
+        const populatedComment=await comment.populate({
             path:"author",
-            select:"username,profilePicture"
+            select:"username profilePicture"
         });
-        await comment.save();   //  check if it is required or not
 
         post.comments.push(comment._id);
         await post.save();
 
         return resp.status(201).json({
             message:"Comment added",
-            comment,
+            comment:populatedComment,
             success:true
         })
     } catch (error) {
@@ -159,11 +167,8 @@ export const addComment=async(req,resp)=>{
 export const getCommentsOfPost=async(req,resp)=>{
     try {
         const postId=req.params.id;
-        const userId=req.id;
-
-        const comments=await Comment.find({post:postId}).populate("author","username,profilePicture");
-        if(!comments) return resp.status(404).json({message:"No comments yet..",success:false});
-
+        const comments=await Comment.find({post:postId}).populate("author","username profilePicture");
+        if(comments.length==0) return resp.status(200).json({message:"No comments yet..",success:false});
         return resp.status(200).json({comments,success:true})
     } catch (error) {
         console.log(error);
@@ -211,12 +216,12 @@ export const bookmarkPost=async(req,resp)=>{
 
         if(user.bookmarks.includes(postId)){
             // remove from bookmark
-            await User.updateOne({$pull:{bookmarks:post._id}})
+            await User.updateOne({_id:authorId},{$pull:{bookmarks:post._id}})
             await user.save()
             return resp.status(200).json({type:"unsaved",message:"Post removed from bookmarks",success:true})
         }else{
             // Add to bookmark
-            await User.updateOne({$addToSet:{bookmarks:post._id}})
+            await User.updateOne({_id:authorId},{$addToSet:{bookmarks:post._id}})
             await user.save()
             return resp.status(200).json({type:"saved",message:"Post bookmarked",success:true})
         }
