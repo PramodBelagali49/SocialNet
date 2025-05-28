@@ -66,7 +66,6 @@ export const login=async(req,resp)=>{
             following:user.following,
             posts:user.posts  // posts id stored here
         }
-
         return resp.cookie('token',token,{httpOnly:true,sameSite:'strict',maxAge:1*24*60*60*1000}).json({
             user,
             message:`welcome back ${user.username}`,
