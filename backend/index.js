@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser"
 import connectDB from "./utils/connectDB.js"
 import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
+import messageRoutes from "./routes/messageRoutes.js"
 
 const app=express()
 // middlewares
@@ -25,6 +26,7 @@ app.use(cors(corsOptions));
 // Routes
 app.use("/api/user",userRoutes);
 app.use("/api/posts",postRoutes);
+app.use("/api/messages",messageRoutes);
 
 const port=3600
 app.listen(port,()=>{
