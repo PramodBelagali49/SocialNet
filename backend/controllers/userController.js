@@ -54,6 +54,8 @@ export const login=async(req,resp)=>{
             })
         }
 
+        const token=await jwt.sign({userId:user._id},process.env.SECRET_KEY,{expiresIn:'1d'})
+        await user.populate("posts");
         user={
             _id:user._id,
             username:user.username,
@@ -65,8 +67,8 @@ export const login=async(req,resp)=>{
             posts:user.posts  // posts id stored here
         }
 
-        const token=await jwt.sign({userId:user._id},process.env.SECRET_KEY,{expiresIn:'1d'})
         return resp.cookie('token',token,{httpOnly:true,sameSite:'strict',maxAge:1*24*60*60*1000}).json({
+            user,
             message:`welcome back ${user.username}`,
             success:true
         })
