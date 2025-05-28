@@ -1,11 +1,11 @@
-import Conversation from "../models/conversation";
-import Message from "../models/message";
+import Conversation from "../models/conversation.js";
+import Message from "../models/message.js";
 
 export const sendMessage=async(req,resp)=>{
     try {
         const senderId=req.id;
         const receiverId=req.params.id;
-        const message=req.body.message;
+        const message=(req.body)?.message;
         
         let conversation=await Conversation.findOne({
             participants:{$all:[senderId,receiverId]}
@@ -33,4 +33,23 @@ export const sendMessage=async(req,resp)=>{
     } catch (error) {
         console.log("Error in sendMessage",error);
     }
-} 
+}
+
+export const getMessage=async(req,resp)=>{
+    try {
+        const senderId=req.id;
+        const receiverId=req.params.id;
+        
+        let conversation=await Conversation.findOne({
+            participants:{$all:[senderId,receiverId]}
+        });
+        await conversation.populate("messages");
+        if(!conversation){
+            return resp.status(200).json({success:true,messages:[]});
+        }
+        return resp.status(200).json({success:true,messages:conversation?.messages});
+
+    } catch (error) {
+        console.log("Error in getMessage: ",error);
+    }
+}
