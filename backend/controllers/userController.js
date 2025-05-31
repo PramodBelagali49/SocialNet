@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import getDataUri from "../utils/dataUri.js";
 import cloudinary from "../utils/cloudinary_config.js";
 
-export const register=async(req,resp)=>{
+export const signup=async(req,resp)=>{
     try {
         const {username,email,password}=req.body;
         if(!username || !email || !password){
@@ -15,8 +15,8 @@ export const register=async(req,resp)=>{
         }
         const user=await User.findOne({$or:[{email},{username}]});
         if(user){
-            return resp.status(401).json({
-                message:"User already registered,try different email/username",
+            return resp.status(400).json({
+                message:"username or email already exists , try different one",
                 success:false
             })
         }
@@ -33,23 +33,27 @@ export const register=async(req,resp)=>{
         })
     } catch (error) {
         console.log(error);
+        return resp.status(500).json({
+            message: "Could NOT register,try again",
+            success: false,
+        });
     }
 };
 
 export const login=async(req,resp)=>{
     try {
-        const {email,password}=req.body;
-        if(!email || !password){
+        const {username,password}=req.body;
+        if(!username || !password){
             return resp.status(401).json({
                 message:"Fill all the details!",
                 success:false
             })
         }
-        let user=await User.findOne({email});
+        let user=await User.findOne({username});
         const isPasswordMatch=await bcrypt.compare(password,user.password); 
         if(!user || !isPasswordMatch){
             return resp.status(401).json({
-                message:"Incorrect email or password !!",
+                message:"Incorrect username or password !!",
                 success:false
             })
         }
