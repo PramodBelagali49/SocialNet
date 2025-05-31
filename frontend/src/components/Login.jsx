@@ -4,17 +4,17 @@ import { Label } from "./ui/Label";
 import { Input } from "./ui/Input";
 import { useState } from "react";
 import axios from "axios";
-// import { Toaster } from "./ui/sonner";
+import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
-const Signup=()=>{
+
+const Login=()=>{
     const navigate=useNavigate();
 
     const [input,setInput]=useState({
         username:"",
-        email:"",
         password:""
     });
     const [loading,setLoading]=useState(false);
@@ -23,12 +23,12 @@ const Signup=()=>{
         setInput({...input,[e.target.name]:e.target.value})
     }
 
-    const signupHandler=async(e)=>{
+    const loginHandler=async(e)=>{
         e.preventDefault();
         // console.log("Input : ",input);
         try {
             setLoading(true);
-            const res=await axios.post("http://localhost:3600/api/user/signup",
+            const res=await axios.post("http://localhost:3600/api/user/login",
                 input,
                 {
                     headers:{
@@ -38,20 +38,16 @@ const Signup=()=>{
                 }
             );
             if(res.data.success){
+                navigate("/");
                 toast.success(res.data.message)
                 setInput({
                     username:"",
-                    email:"",
                     password:""
                 })
-                navigate("/");
             }
-
         } catch (error) {
-            console.log("Error in SignUp handler",error);
-            // toast.error(error.response);
+            console.log("Error in login handler",error);
             toast.error(error?.response?.data?.message);
-            
         } finally{
             setLoading(false);
         }
@@ -59,10 +55,10 @@ const Signup=()=>{
 
     return(
         <div className="flex items-center w-screen h-screen justify-center">
-            <form onSubmit={signupHandler} className="shadow-lg flex flex-col gap-5 p-8">
+            <form onSubmit={loginHandler} className="shadow-lg flex flex-col gap-8 p-12">
                 <div className="mt-4">
                     <h1 className="text-3xl text-center mb-1">Logo</h1>
-                    <p className="text-sm text-center">Signup to see all the photos and videos</p>
+                    <p className="text-sm text-center">Login to use your account</p>
                 </div>
 
                 <div>
@@ -78,17 +74,6 @@ const Signup=()=>{
                 </div>
 
                 <div>
-                    <Label className="mb-2 font-medium">Email</Label>
-                    <Input
-                        type="email"
-                        className="focus-visible:ring-transparent"
-                        name="email"
-                        value={input.email}
-                        onChange={changeEventHandler}
-                    />
-                </div>
-
-                <div>
                     <Label className="mb-2 font-medium">Password</Label>
                     <Input
                         type="password"
@@ -98,17 +83,16 @@ const Signup=()=>{
                         onChange={changeEventHandler}
                     />
                 </div>
-
                 {
                     loading ? (
-                        <Loader2 className="mx-auto animate-spin"/>
+                        <Loader2 className="mx-auto my-auto animate-spin"/>
                     ) : (
-                        <Button type="submit" className="bg-black text-white">Signup</Button>       
+                        <Button type="submit" className="bg-black text-white">Login</Button>
                     )
                 }
-                <span className="text-center text-sm">Already have an account ? <Link to="/login" className="text-blue-600 underline">login</Link> </span>
+                <span className="text-center text-sm">Not registered yet ? <Link to="/signup" className="text-blue-600 underline">Signup</Link> </span>
             </form>
         </div>
     )
 }
-export default Signup;
+export default Login;
