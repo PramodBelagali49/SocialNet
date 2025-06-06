@@ -50,7 +50,12 @@ export const login=async(req,resp)=>{
             })
         }
         let user=await User.findOne({username});
-        const isPasswordMatch=await bcrypt.compare(password,user.password); 
+        let isPasswordMatch;
+        {
+            if(user) {
+                isPasswordMatch=await bcrypt.compare(password,user?.password);
+            }
+        }
         if(!user || !isPasswordMatch){
             return resp.status(401).json({
                 message:"Incorrect username or password !!",
