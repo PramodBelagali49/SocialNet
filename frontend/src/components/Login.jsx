@@ -8,10 +8,13 @@ import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "@/redux/authSlice.js";
 
 
 const Login=()=>{
     const navigate=useNavigate();
+    const dispatch=useDispatch();
 
     const [input,setInput]=useState({
         username:"",
@@ -38,6 +41,7 @@ const Login=()=>{
                 }
             );
             if(res.data.success){
+                dispatch(setAuthUser(res.data.user));
                 navigate("/");
                 toast.success(res.data.message)
                 setInput({

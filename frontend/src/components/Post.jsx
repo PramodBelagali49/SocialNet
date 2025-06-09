@@ -7,6 +7,7 @@ import CommentDialog from './CommentDialog'
 
 function Post() {
     const [text,setText]=useState("");
+    const [commentIconClicked,setCommentIconClicked]=useState(false);
 
     const commentInputHandler=(e)=>{
         const inputText=e.target.value;
@@ -47,7 +48,7 @@ function Post() {
             <div className='flex item-center justify-between mb-1'>
                 <div className='flex items-center gap-3'>
                     <Heart className='cursor-pointer hover:text-gray-500'/>
-                    <MessageCircle className='cursor-pointer hover:text-gray-500'/>
+                    <MessageCircle onClick={()=>setCommentIconClicked(true)} className='cursor-pointer hover:text-gray-500'/>
                     <Send className='cursor-pointer hover:text-gray-500'/>
                 </div>
                 <Bookmark className='cursor-pointer hover:text-gray-500'/>
@@ -57,8 +58,8 @@ function Post() {
                 <span className='font-medium mr-2'>Username</span>
                 caption
             </p>
-            <span>view all 10 comments</span>
-            <CommentDialog/>
+            <span onClick={()=>setCommentIconClicked(true)} className='cursor-pointer text-gray-500'>view all 10 comments</span>
+            <CommentDialog commentIconClicked={commentIconClicked}  setCommentIconClicked={setCommentIconClicked}/>
 
             <div className='flex items-center justify-between'>
                 <input
