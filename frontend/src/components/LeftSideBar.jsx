@@ -1,18 +1,20 @@
 import { AvatarImage } from '@radix-ui/react-avatar'
 import { Heart, Home, LogOut, MessageCircle, PlusSquare, PlusSquareIcon, Search, TrendingUp } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 import { AvatarFallback, Avatar } from './ui/avatar'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuthUser } from '@/redux/authSlice'
-// import store from '../redux/store.js'   // No need bcz useSelector automatically uses the default Store from the Provider in main.jsx
+import CreatePost from './ui/createPost'
+// import store from '../redux/store.js/'   // No need bcz useSelector automatically uses the default Store from the Provider in main.jsx
 
 function LeftSideBar() {
     const navigate=useNavigate();
     const dispatch=useDispatch();
     const {user}=useSelector(store=>store.auth || {})
+    const [createIconClicked,setCreateIconClicked]=useState(false);
 
     const logoutHandler=async()=>{
         try {
@@ -29,7 +31,11 @@ function LeftSideBar() {
     }
 
     const sideBarhandler=(textType)=>{
-        if(textType=="Logout") logoutHandler();
+        if(textType=="Logout"){
+            logoutHandler();
+        }else if (textType=="Create"){
+            setCreateIconClicked(true);
+        }
     }
     const sidebarItems=[
         {icon:<Home/>,text:"Home"},
@@ -40,8 +46,8 @@ function LeftSideBar() {
         {icon:<PlusSquareIcon/> , text:"Create"},
         {
             icon: (
-                <Avatar className="h-6 w-6">
-                    <AvatarImage src={user?.profilePicture || ""} alt='avatarImage'/>
+                <Avatar>
+                    <AvatarImage src={user?.profilePicture || "https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg"} alt='avatarImage'/>
                     <AvatarFallback/>
                 </Avatar>
             ),
@@ -66,6 +72,7 @@ function LeftSideBar() {
                         }
                     </div>
             </div>
+            <CreatePost createIconClicked={createIconClicked} setCreateIconClicked={setCreateIconClicked}/>
         </div>
     )
 }
