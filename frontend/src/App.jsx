@@ -13,10 +13,6 @@ function App() {
       element:<MainLayout/>,
       children:[
         {
-          path:"/home",
-          element:<Home/>
-        },
-        {
           path:"/profile",
           element:<Profile/>
         }

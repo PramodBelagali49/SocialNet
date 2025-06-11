@@ -23,7 +23,7 @@ function CommentDialog({commentIconClicked,setCommentIconClicked}) {
 
   return (
     <Dialog open={commentIconClicked}>
-      <DialogContent onInteractOutside={()=>setCommentIconClicked(false)} className='bg-white max-w-5xl p-0 flex flex-col h-200% w-200%'>
+      <DialogContent onInteractOutside={()=>setCommentIconClicked(false)} className='max-w-5xl p-0 flex flex-col h-200% w-200%'>
         <div className='flex flex-1'>
           <div className="w-1/2">
               <img 

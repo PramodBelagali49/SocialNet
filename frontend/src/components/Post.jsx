@@ -32,7 +32,7 @@ function Post() {
                     <DialogTrigger asChild>
                         <MoreHorizontal className='cursor-pointer'/>
                     </DialogTrigger>
-                    <DialogContent className="flex flex-col items-center text-sm text-center bg-white">
+                    <DialogContent className="flex flex-col items-center text-sm text-center">
                         <Button variant="ghost" className="cursor-pointer w-fit text-[#ED4956] font-bold">Unfollow</Button>
                         <Button variant="ghost" className="cursor-pointer w-fit  font-bold">Add to favourites</Button>
                         <Button variant="ghost" className="cursor-pointer w-fit  font-bold">Delete</Button>
