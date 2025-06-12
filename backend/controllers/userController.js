@@ -22,15 +22,22 @@ export const signup=async(req,resp)=>{
         }
 
         const hashedPassword=await bcrypt.hash(password,10);
-        await User.create({
+        const newUser=await User.create({
             username,
             email,
             password:hashedPassword
         })
-        return resp.status(200).json({
-            message:"User registered successfully",
+        // on regietering a user add a token to the cookie
+        const token=jwt.sign({userId:newUser._id},process.env.SECRET_KEY,{expiresIn:'1d'})
+        return resp.cookie('token',token,{httpOnly:true,sameSite:'strict',maxAge:1*24*60*60*1000}).json({
+            user:newUser,
+            message:`${newUser.username} registered successfully`,
             success:true
         })
+        // return resp.status(200).json({
+        //     message:"User registered successfully",
+        //     success:true
+        // })
     } catch (error) {
         console.log(error);
         return resp.status(500).json({
@@ -63,7 +70,7 @@ export const login=async(req,resp)=>{
             })
         }
 
-        const token=await jwt.sign({userId:user._id},process.env.SECRET_KEY,{expiresIn:'1d'})
+        const token=jwt.sign({userId:user._id},process.env.SECRET_KEY,{expiresIn:'1d'})
         await user.populate("posts");
         user={
             _id:user._id,
