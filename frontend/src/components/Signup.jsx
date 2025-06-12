@@ -8,9 +8,12 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "@/redux/authSlice";
 
 const Signup=()=>{
     const navigate=useNavigate();
+    const dispatch=useDispatch();
 
     const [input,setInput]=useState({
         username:"",
@@ -28,17 +31,15 @@ const Signup=()=>{
         // console.log("Input : ",input);
         try {
             setLoading(true);
-            const res=await axios.post("http://localhost:3600/api/user/signup",
-                input,
-                {
-                    headers:{
-                        "Content-Type":"application/json"
-                    },
-                    withCredentials:true
-                }
-            );
+            const res=await axios.post("http://localhost:3600/api/user/signup",input,{
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                withCredentials:true
+            });
             if(res.data.success){
-                toast.success(res.data.message)
+                toast.success(res.data.message);
+                dispatch(setAuthUser(res.data.user))
                 setInput({
                     username:"",
                     email:"",

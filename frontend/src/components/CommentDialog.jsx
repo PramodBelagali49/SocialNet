@@ -50,8 +50,8 @@ function CommentDialog({commentIconClicked,setCommentIconClicked}) {
                           <MoreHorizontal className='cursor-pointer'/>
                       </DialogTrigger>
                       <DialogContent className='flex flex-col items-center text-sm text-center bg-white sm:max-w-sm'>
-                          <div className='cursor-pointer w-full text-[#ed4956] font-bold '>Unfollow</div>
-                          <div className='font-bold cursor-pointer w-full'>Add to favourites</div>
+                          <Button className='cursor-pointer w-3/4 text-[#ed4956] font-bold '>Unfollow</Button>
+                          <Button className='font-bold cursor-pointer w-3/4'>Add to favourites</Button>
                       </DialogContent>
                   </Dialog>
               </div>

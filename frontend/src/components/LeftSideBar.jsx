@@ -13,7 +13,7 @@ import CreatePost from './ui/createPost'
 function LeftSideBar() {
     const navigate=useNavigate();
     const dispatch=useDispatch();
-    const {user}=useSelector(store=>store.auth || {})
+    const user=useSelector(store=>store.auth?.user);
     const [createIconClicked,setCreateIconClicked]=useState(false);
 
     const logoutHandler=async()=>{
@@ -24,7 +24,10 @@ function LeftSideBar() {
                 navigate("/login")
             }
             toast.success(res.data.message);
-        } catch (error) {   
+        } catch (error) {
+            if(!user){
+                navigate("/login")
+            }
             console.log("galati in logouthandler : ",error);
             toast.error(error?.response?.data?.message);
         }
@@ -47,8 +50,8 @@ function LeftSideBar() {
         {
             icon: (
                 <Avatar>
-                    <AvatarImage src={user?.profilePicture || "https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg"} alt='avatarImage'/>
-                    <AvatarFallback/>
+                    <AvatarImage src={user?.profilePicture} alt='avatarImage'/>
+                    <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
             ),
             text:"Profile"
