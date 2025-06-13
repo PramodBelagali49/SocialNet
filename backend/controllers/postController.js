@@ -102,7 +102,7 @@ export const likePost = async (req, resp) => {
 
         return resp.status(200).json({message:"Post liked",success:true})
     } catch (error) {
-        console.log(error);
+        console.log("galati in likePost backend ",error);
     }
 }
 
@@ -121,7 +121,7 @@ export const unlikePost = async (req, resp) => {
 
         return resp.status(200).json({message:"Post unliked",success:true})
     } catch (error) {
-        console.log(error);
+        console.log("galati in unlikePost backend ",error);
     }
 }
 
