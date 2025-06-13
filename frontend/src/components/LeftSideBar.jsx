@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { setAuthUser } from '@/redux/authSlice'
+import { setAuthUser, setSuggestedUsers } from '@/redux/authSlice'
 import CreatePost from './ui/createPost'
 import { setPosts, setSelectedPost } from '@/redux/postSlice'
 // import store from '../redux/store.js/'   // No need bcz useSelector automatically uses the default Store from the Provider in main.jsx
@@ -24,6 +24,7 @@ function LeftSideBar() {
                 dispatch(setAuthUser(null));
                 dispatch(setPosts([]));
                 dispatch(setSelectedPost(null));
+                dispatch(setSuggestedUsers([]));
                 navigate("/login")
             }
             toast.success(res.data.message);

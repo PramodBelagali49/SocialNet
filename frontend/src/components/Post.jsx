@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Dialog, DialogTrigger, DialogContent } from './ui/dialog'
-import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
+import { Badge, Bookmark, Heart, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Button } from './ui/Button'
 import CommentDialog from './CommentDialog'
@@ -103,7 +103,15 @@ function Post({post}) {
                         <AvatarImage src={post.author?.profilePicture || null} alt='profile_pic'></AvatarImage>
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                    <h1 className='font-semibold'>{post.author?.username}</h1>
+                    <div className='flex items-center gap-3'>
+                        <h1 className='font-semibold'>{post.author?.username}</h1>
+                        {
+                            user?._id === post?.author?._id &&
+                            <span className="bg-gray-300 font-semibold text-black text-[10px] px-2 py-0.5 rounded-full">
+                                    Author
+                            </span>
+                        }
+                    </div>
                 </div>
                 <Dialog>
                     <DialogTrigger asChild>
