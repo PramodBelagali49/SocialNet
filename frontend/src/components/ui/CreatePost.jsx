@@ -63,11 +63,11 @@ function CreatePost({createIconClicked,setCreateIconClicked}) {
             <DialogHeader className="text-center font-semibold mx-auto">Create new post</DialogHeader>
             <div className='flex items-center gap-3'>
                 <Avatar>
-                    <AvatarImage src={user.profilePicture} alt="avatar_img"></AvatarImage>
+                    <AvatarImage src={user?.profilePicture} alt="avatar_img"></AvatarImage>
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div>
-                    <h1 className='font-semibold text-lg'>{user.username}</h1>
+                    <h1 className='font-semibold text-lg'>{user?.username}</h1>
                     <span className='text-gray-600 text-xs'>Bio here...</span>
                 </div>
             </div>

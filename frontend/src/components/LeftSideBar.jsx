@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuthUser } from '@/redux/authSlice'
 import CreatePost from './ui/createPost'
+import { setPosts, setSelectedPost } from '@/redux/postSlice'
 // import store from '../redux/store.js/'   // No need bcz useSelector automatically uses the default Store from the Provider in main.jsx
 
 function LeftSideBar() {
@@ -21,6 +22,8 @@ function LeftSideBar() {
             const res=await axios.get("http://localhost:3600/api/user/logout",{withCredentials:true})
             if(res.data.success){
                 dispatch(setAuthUser(null));
+                dispatch(setPosts([]));
+                dispatch(setSelectedPost(null));
                 navigate("/login")
             }
             toast.success(res.data.message);
@@ -50,7 +53,7 @@ function LeftSideBar() {
         {
             icon: (
                 <Avatar>
-                    <AvatarImage src={user?.profilePicture} alt='avatarImage'/>
+                    <AvatarImage src={user?.profilePicture} alt='avatarImage' className='w-full h-full'/>
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
             ),
@@ -68,7 +71,7 @@ function LeftSideBar() {
                                 return (
                                     <div onClick={()=>sideBarhandler(item.text)} key={index} className='flex items-center gap-3 relative hover:bg-gray-200 cursor-pointer rounded-lg p-3 my-3'>
                                         {item.icon}
-                                        <span>{item.text}</span> 
+                                        <span>{item.text}</span>
                                     </div>
                                 )
                             })
