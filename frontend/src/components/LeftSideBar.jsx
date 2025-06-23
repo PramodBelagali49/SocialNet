@@ -37,13 +37,6 @@ function LeftSideBar() {
         }
     }
 
-    const sideBarhandler=(textType)=>{
-        if(textType=="Logout"){
-            logoutHandler();
-        }else if (textType=="Create"){
-            setCreateIconClicked(true);
-        }
-    }
     const sidebarItems=[
         {icon:<Home/>,text:"Home"},
         {icon:<Search/>,text:"Search"},
@@ -62,6 +55,19 @@ function LeftSideBar() {
         },
         { icon:<LogOut/> , text:"Logout" }
     ]
+
+    const sideBarhandler=(textType)=>{
+        if (textType=="Logout"){
+            logoutHandler();
+        }else if (textType=="Create"){
+            setCreateIconClicked(true);
+        }else if(textType=="Profile"){
+            navigate(`/profile/${user?._id}`);
+        }else if (textType=="Home"){
+            navigate("/")
+        }
+    }
+
     return (
         <div className='fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[15%] h-screen'>
             <div className='flex flex-col'>
