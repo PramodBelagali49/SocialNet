@@ -5,6 +5,7 @@ import { RouterProvider } from 'react-router-dom'
 import MainLayout from './components/MainLayout'
 import Home from './components/Home'
 import Profile from './components/Profile'
+import EditProfile from './components/EditProfile'
 
 function App() {
   const browserRouter=createBrowserRouter([
@@ -13,8 +14,16 @@ function App() {
       element:<MainLayout/>,
       children:[
         {
-          path:"/profile",
+          path:"/",
+          element:<Home/>
+        },
+        {
+          path:"/profile/:id",
           element:<Profile/>
+        },
+        {
+          path:"/profile/edit",
+          element:<EditProfile/>
         }
       ]
     },
