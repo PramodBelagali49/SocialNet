@@ -107,6 +107,8 @@ export const getProfile=async(req,resp)=>{
     try {
         const userId=req.params.id;
         const user=await User.findById(userId).select("-password");
+        await user.populate({path:"posts",createdAt:-1});
+        await user.populate("bookmarks");
         return resp.status(200).json({
             user,
             success:true
