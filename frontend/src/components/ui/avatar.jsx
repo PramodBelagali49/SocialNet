@@ -26,19 +26,20 @@ function AvatarImage({
       {...props} />
   );
 }
-function AvatarFallback({ className, ...props }) {
+
+function AvatarFallback({
+  className,
+  ...props
+}) {
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        "w-10 h-10 rounded-full bg-gray-100 text-gray-800 text-sm font-semibold flex items-center justify-center leading-none",
+        "bg-muted flex size-full items-center justify-center rounded-full",
         className
       )}
-      {...props}
-    />
+      {...props} />
   );
 }
-
-
 
 export { Avatar, AvatarImage, AvatarFallback }
