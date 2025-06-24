@@ -14,7 +14,8 @@ import { setPosts, setSelectedPost } from '@/redux/postSlice'
 function LeftSideBar() {
     const navigate=useNavigate();
     const dispatch=useDispatch();
-    const user=useSelector(store=>store.auth?.user);
+    // const user=useSelector(store=>store.auth?.user);
+    const {user}=useSelector(store=>store.auth);
     const [createIconClicked,setCreateIconClicked]=useState(false);
 
     const logoutHandler=async()=>{
