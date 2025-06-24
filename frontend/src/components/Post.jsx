@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { setPosts, setSelectedPost } from '@/redux/postSlice'
+import { Link } from 'react-router-dom';
 
 function Post({post}) {
     const [text,setText]=useState("");
@@ -98,20 +99,22 @@ function Post({post}) {
     return (
         <div className='my-8 w-full max-w-sm mx-auto'>
             <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-2'>
-                    <Avatar>
-                        <AvatarImage src={post.author?.profilePicture || null} alt='profile_pic'></AvatarImage>
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <div className='flex items-center gap-3'>
-                        <h1 className='font-semibold'>{post.author?.username}</h1>
-                        {
-                            user?._id === post?.author?._id &&
-                            <span className="bg-gray-300 font-semibold text-black text-[10px] px-2 py-0.5 rounded-full">
-                                    Author
-                            </span>
-                        }
-                    </div>
+                <div>
+                    <Link to={`/profile/${post?.author?._id}`} className='flex items-center gap-2'>
+                        <Avatar>
+                            <AvatarImage src={post.author?.profilePicture || null} alt='profile_pic'></AvatarImage>
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                        <div className='flex items-center gap-3'>
+                            <h1 className='font-semibold'>{post.author?.username}</h1>
+                            {
+                                user?._id === post?.author?._id &&
+                                <span className="bg-gray-300 font-semibold text-black text-[10px] px-2 py-0.5 rounded-full">
+                                        Author
+                                </span>
+                            }
+                        </div>
+                    </Link>
                 </div>
                 <Dialog>
                     <DialogTrigger asChild>

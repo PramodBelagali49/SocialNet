@@ -110,8 +110,8 @@ const Profile = () => {
                   <span className="pl-1">{userProfile?.username}</span>{" "}
                 </Badge>
                 <span>Software developer</span>
-                <span>Loves coding,cricket....</span>
-                <span>Perennial learn</span>
+                <span>Loves coding,cricket,music....</span>
+                <span>Perennial learner</span>
               </div>
             </div>
           </section>
