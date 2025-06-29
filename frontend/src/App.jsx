@@ -6,8 +6,23 @@ import MainLayout from './components/MainLayout'
 import Home from './components/Home'
 import Profile from './components/Profile'
 import EditProfile from './components/EditProfile'
+import ChatPage from './components/ChatPage'
+import { io } from 'socket.io-client'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
 function App() {
+  const user=useSelector(store=>store.auth);
+  useEffect({
+      if(user){
+        const socketio=io("http://localhost:3600",{
+          query:{
+            userId:user?._id
+          },
+          transports:["websocket"]
+        })
+      }
+  },[])
   const browserRouter=createBrowserRouter([
     {
       path:"/",
@@ -24,6 +39,9 @@ function App() {
         {
           path:"/profile/edit",
           element:<EditProfile/>
+        },{
+          path:"/chat",
+          element:<ChatPage/>
         }
       ]
     },

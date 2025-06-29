@@ -11,7 +11,10 @@ import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
 import messageRoutes from "./routes/messageRoutes.js"
 
-const app=express()
+// const app=express()
+import { app, server } from "./socket/socket.js"
+
+
 // middlewares
 app.use(express.json());
 app.use(cookieParser());
@@ -29,7 +32,8 @@ app.use("/api/posts",postRoutes);
 app.use("/api/messages",messageRoutes);
 
 const port=3600
-app.listen(port,()=>{
+
+server.listen(port,()=>{
     connectDB();
     console.log(`server listening to port ${port}`);
 })
