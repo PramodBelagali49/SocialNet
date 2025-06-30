@@ -3,7 +3,7 @@ if(process.env.NODE_ENV != "production"){
     dotenv.config({ path: '../.env' })
 }
 
-import express, { urlencoded } from "express"
+import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import connectDB from "./utils/connectDB.js"

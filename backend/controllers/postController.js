@@ -3,6 +3,7 @@ import User from "../models/user.js";
 import sharp from "sharp"
 import cloudinary from "../utils/cloudinary_config.js";
 import Comment from "../models/comment.js";
+import { getReceiverSocketId } from "../socket/socket.js";
 
 export const addPost=async(req,resp)=>{
     try {
@@ -90,7 +91,7 @@ export const getAuthorPosts=async(req,resp)=>{
 export const likePost = async (req, resp) => {
     try {
         const postId=req.params.id;
-        const userId=req.id;
+        const userId=req.id;  // userId is the id of one who likes the post
         const post=await Post.findById(postId);
 
         if(!post) return resp.status(404).json({message:"Post Not Found",success:false})
@@ -99,6 +100,19 @@ export const likePost = async (req, resp) => {
         await post.save()
 
             // implementation of Socket.io for RTN
+        const user=await User.findById(userId).select("username profilePicture");
+        const postOwnerId=post?.author.toString();
+        if(postOwnerId !== userId){
+            const notification={
+                type:"like",
+                userId:userId,
+                userDetails:user,
+                postId,
+                message:"Your post was liked"
+            }
+            const postOwnerSocketId=getReceiverSocketId(postOwnerId);
+            io.to(postOwnerSocketId).emit("likeNotification",notification);
+        }
 
         return resp.status(200).json({message:"Post liked",success:true})
     } catch (error) {
@@ -118,6 +132,20 @@ export const unlikePost = async (req, resp) => {
         await post.save()
 
             // implementation of Socket.io for RTN
+        const user=await User.findById(userId).select("username profilePicture");
+        const postOwnerId=post?.author.toString();
+        if(postOwnerId !== userId){
+            const notification={
+                type:"dislike",
+                userId:userId,
+                userDetails:user,
+                postId,
+                message:"Your post was disliked"
+            }
+
+            const postOwnerSocketId=getReceiverSocketId(postOwnerId);
+            io.to(postOwnerSocketId).emit("dislikeNotification",notification);
+        }
 
         return resp.status(200).json({message:"Post unliked",success:true})
     } catch (error) {
