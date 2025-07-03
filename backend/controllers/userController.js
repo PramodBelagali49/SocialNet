@@ -136,7 +136,7 @@ export const editProfile=async(req,resp)=>{
         if(profilePicture){
             const fileUri=getDataUri(profilePicture);
             cloudResponse=await cloudinary.uploader.upload(fileUri, {
-                folder: "instagram/profilePictures", // Specify your folder structure
+                folder: "SocialNet/profilePictures", // Specify your folder structure
                 public_id: `user_${userId}`, // Optional: give specific name to file
                 overwrite: true // Will replace existing image with same public_id
             });
