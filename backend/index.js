@@ -10,9 +10,14 @@ import connectDB from "./utils/connectDB.js"
 import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
 import messageRoutes from "./routes/messageRoutes.js"
+import path from "path"
+import { app, server } from "./socket/socket.js"
+
 
 // const app=express()
-import { app, server } from "./socket/socket.js"
+const port=3600
+const __dirname=path.resolve();
+
 
 
 // middlewares
@@ -31,7 +36,10 @@ app.use("/api/user",userRoutes);
 app.use("/api/posts",postRoutes);
 app.use("/api/messages",messageRoutes);
 
-const port=3600
+app.use(express.static(path.join(__dirname,"/frontend/dist")));
+app.get("*",(req,resp)=>{
+    resp.sendFile(path.resolve(__dirname,"frontend","dist","index.html"));
+})
 
 server.listen(port,()=>{
     connectDB();
