@@ -1,14 +1,7 @@
 import dotenv from "dotenv"
-import path from "path"
-import { fileURLToPath } from 'url';
 
-// ✅ Fix for __dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// ✅ Load .env only in development
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: path.resolve(__dirname, '../.env') });
+if(process.env.NODE_ENV!="production"){
+    dotenv.config({path:".env"})
 }
 
 import express from "express"
@@ -18,11 +11,15 @@ import connectDB from "./utils/connectDB.js"
 import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
 import messageRoutes from "./routes/messageRoutes.js"
+import path from "path"
 import { app, server } from "./socket/socket.js"
 
 
 // const app=express()
 const port=3600
+const __dirname=path.resolve();
+
+
 
 // middlewares
 app.use(express.json());
@@ -40,7 +37,7 @@ app.use("/api/user",userRoutes);
 app.use("/api/posts",postRoutes);
 app.use("/api/messages",messageRoutes);
 
-app.use(express.static(path.join(__dirname,"frontend","dist")));
+app.use(express.static(path.join(__dirname,"/frontend/dist")));
 app.get("/*path",(req,resp)=>{
     resp.sendFile(path.resolve(__dirname,"frontend","dist","index.html"));
 })
