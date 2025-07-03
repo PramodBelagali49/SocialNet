@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Dialog, DialogTrigger, DialogContent } from './ui/dialog'
-import { Badge, Bookmark, BookmarkCheck, Heart, MessageCircle, MoreHorizontal, Send, FaHeart, FaRegHeart } from 'lucide-react'
-// import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { Badge, Bookmark, BookmarkCheck, Heart, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 // import { BookMarked } from 'lucide-react';
 
 import { Button } from './ui/Button'
