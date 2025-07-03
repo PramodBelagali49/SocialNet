@@ -8,8 +8,7 @@ router.route("/")
         .get(getAllPosts)  // Public route
         .post(upload.single("image"),isAuthenticated,addPost)   // multer middleware for parsing image files
 
-        
-router.use(isAuthenticated);   // middleware that applies to all the routes below it 
+        router.use(isAuthenticated);   // middleware that applies to all the routes below it
 // Protected routes
 router.get("/getAuthorPosts",getAuthorPosts);
 

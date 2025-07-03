@@ -3,7 +3,7 @@ import User from "../models/user.js";
 import sharp from "sharp"
 import cloudinary from "../utils/cloudinary_config.js";
 import Comment from "../models/comment.js";
-import { getReceiverSocketId } from "../socket/socket.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const addPost=async(req,resp)=>{
     try {
@@ -111,7 +111,7 @@ export const likePost = async (req, resp) => {
                 message:"Your post was liked"
             }
             const postOwnerSocketId=getReceiverSocketId(postOwnerId);
-            io.to(postOwnerSocketId).emit("likeNotification",notification);
+            io.to(postOwnerSocketId).emit("notification",notification);
         }
 
         return resp.status(200).json({message:"Post liked",success:true})
@@ -144,7 +144,7 @@ export const unlikePost = async (req, resp) => {
             }
 
             const postOwnerSocketId=getReceiverSocketId(postOwnerId);
-            io.to(postOwnerSocketId).emit("dislikeNotification",notification);
+            io.to(postOwnerSocketId).emit("notification",notification);
         }
 
         return resp.status(200).json({message:"Post unliked",success:true})
