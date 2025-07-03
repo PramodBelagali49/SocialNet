@@ -1,4 +1,4 @@
-import Signup from './components/signup'
+import Signup from './components/Signup'
 import Login from './components/Login'
 import { createBrowserRouter } from 'react-router-dom'
 import { RouterProvider } from 'react-router-dom'
