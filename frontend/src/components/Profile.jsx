@@ -119,21 +119,21 @@ const Profile = () => {
         <div className="border-t border-t-gray-200">
           <div className="flex items-center justify-center gap-10 text-sm">
             <span
-              className={`py-3 cursor-pointer ${activeTab === "posts" ? "font-bold" : ""
+              className={`py-3 cursor-pointer text-md ${activeTab === "posts" ? "font-bold" : ""
                 }`}
               onClick={() => handleTabChange("posts")}
             >
-              POSTS
+              Posts
             </span>
             <span
-              className={`py-3 cursor-pointer ${activeTab === "saved" ? "font-bold" : ""
+              className={`py-3 cursor-pointer text-md ${activeTab === "bookmarks" ? "font-bold" : ""
                 }`}
-              onClick={() => handleTabChange("saved")}
+              onClick={() => handleTabChange("bookmarks")}
             >
-              SAVED
+              Bookmarks
             </span>
-            <span className="py-3 cursor-not-allowed">REELS</span>
-            <span className="py-3 cursor-not-allowed">TAGS</span>
+            <span className="py-3 cursor-not-allowed text-md">Reels</span>
+            <span className="py-3 cursor-not-allowed text-md">Tags</span>
           </div>
           <div className="grid grid-cols-3 gap-1 min-h-[200px]">
             {
@@ -148,27 +148,26 @@ const Profile = () => {
               (
                 displayedPost?.map((post) => {
                   return (
-                    <div
-                      key={post?._id}
-                      className="relative group cursor-pointer mx-1"
-                    >
-                      <img
-                        src={post?.image}
-                        alt="postimage"
-                        className="rounded-sm my-2 w-full aspect-square object-cover"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 opacity-0 group-hover:opacity-100 group-hover:text-2xl transition-opacity duration-300">
-                        <div className="flex items-center text-white space-x-4">
-                          <button className="flex items-center gap-2 hover:text-gray-300">
-                            <Heart />
-                            <span>{post?.likes?.length}</span>
-                          </button>
-                          <button className="flex items-center gap-2 hover:text-gray-300">
-                            <MessageCircle />
-                            <span>{post?.comments?.length}</span>
-                          </button>
+                    <div key={post?._id} className="relative group cursor-pointer mx-1">
+                      <Link to="/">
+                        <img
+                          src={post?.image}
+                          alt="postimage"
+                          className="rounded-sm my-2 w-full aspect-square object-cover"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 opacity-0 group-hover:opacity-100 group-hover:text-2xl transition-opacity duration-300">
+                          <div className="flex items-center text-white space-x-4">
+                            <button className="flex items-center gap-2 hover:text-gray-300">
+                              <Heart />
+                              <span>{post?.likes?.length}</span>
+                            </button>
+                            <button className="flex items-center gap-2 hover:text-gray-300">
+                              <MessageCircle />
+                              <span>{post?.comments?.length}</span>
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      </Link>
                     </div>
                   );
                 })

@@ -96,6 +96,17 @@ function Post({post}) {
         }
     }
 
+    const bookmarkHandler=async()=>{
+        try {
+            const res=await axios.patch(`http://localhost:3600/api/posts/${post?._id}/bookmarkPost`,{},{withCredentials:true});
+            if(res.data.success){
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log("galati in bookmark handdler: ",error);
+        }
+    }
+
     return (
         <div className='my-8 w-full max-w-sm mx-auto'>
             <div className='flex items-center justify-between'>
@@ -146,7 +157,14 @@ function Post({post}) {
                     } className='cursor-pointer hover:text-gray-500'/>
                     <Send className='cursor-pointer hover:text-gray-500'/>
                 </div>
-                <Bookmark className='cursor-pointer hover:text-gray-500'/>
+
+                {
+                    user?.bookmarks?.includes(post?._id) ? (
+                        <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-500 bg-black'/>
+                    ) : (
+                        <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-500'/>
+                    )
+                }
             </div>
             <span className='font-medium block mb-2'>
                 {post.likes.length==0 ? "0 likes" : post.likes.length=='1' ? "1 like" : post.likes.length+" likes"}

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { SocketContext } from './context/socketContext.js'
 import { setOnlineUsers } from './redux/chatSlice'
+import { setLikeNotifications } from './redux/rtnSlice'
 
 function App() {
     const {user}=useSelector(store=>store.auth);
@@ -32,6 +33,10 @@ function App() {
 
           socketio.on("getOnlineUsers",(onlineUsers)=>{
             dispatch(setOnlineUsers(onlineUsers));
+          })
+
+          socketio.on("notification",(notification)=>{
+            dispatch(setLikeNotifications(notification));
           })
 
           return () => {

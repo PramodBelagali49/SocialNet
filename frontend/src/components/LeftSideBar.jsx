@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setAuthUser, setSuggestedUsers } from '@/redux/authSlice'
 import CreatePost from './ui/createPost'
 import { setPosts, setSelectedPost } from '@/redux/postSlice'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { Button } from './ui/Button'
 // import store from '../redux/store.js/'   // No need bcz useSelector automatically uses the default Store from the Provider in main.jsx
 
 function LeftSideBar() {
@@ -17,6 +19,8 @@ function LeftSideBar() {
     // const user=useSelector(store=>store.auth?.user);
     const {user}=useSelector(store=>store.auth);
     const [createIconClicked,setCreateIconClicked]=useState(false);
+
+    const {likeNotifications}=useSelector(store=>store.realTimeNotification);
 
     const logoutHandler=async()=>{
         try {
@@ -82,6 +86,35 @@ function LeftSideBar() {
                                     <div onClick={()=>sideBarhandler(item.text)} key={index} className='flex items-center gap-3 relative hover:bg-gray-200 cursor-pointer rounded-lg p-3 my-3'>
                                         {item.icon}
                                         <span>{item.text}</span>
+                                        {
+                                            item.text=="Notifications" && likeNotifications.length > 0 && (
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <Button size="icon" className="rounded-full h-5 w-5 absolute bottom-6 left-6 bg-red-600 cursor-pointer">{likeNotifications.length}</Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className='bg-gray-300'>
+                                                        <div>
+                                                            {
+                                                                likeNotifications.length==0 ? (<p>No new notifications</p>) : (
+                                                                    likeNotifications.map((notification)=>{
+                                                                        console.log("notification.userDetails inside popover",notification);
+                                                                        return(
+                                                                            <div key={notification?.userId} className='flex gap-4 items-center my-1'>
+                                                                                <Avatar>
+                                                                                    <AvatarImage src={notification?.profilePicture} className='w-full h-full'></AvatarImage>
+                                                                                    <AvatarFallback>CN</AvatarFallback>
+                                                                                </Avatar>
+                                                                                <p className='text-sm'><span className='font-bold'>{notification?.username}</span> liked your post</p>
+                                                                            </div>
+                                                                        )
+                                                                    })
+                                                                )
+                                                            }
+                                                        </div>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            )
+                                        }
                                     </div>
                                 )
                             })

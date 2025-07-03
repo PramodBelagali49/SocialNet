@@ -15,7 +15,7 @@ export const useGetRTM=()=>{
         })
 
         return()=>{
-            socket?.off();
+            socket?.off("newMessage");
         }
     },[messages,setMessages])
 
