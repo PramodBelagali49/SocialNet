@@ -2,7 +2,7 @@ import { AvatarImage } from '@radix-ui/react-avatar'
 import { Heart, Home, LogOut, MessageCircle, PlusSquare, PlusSquareIcon, Search, TrendingUp } from 'lucide-react'
 import React, { useState } from 'react'
 import { AvatarFallback, Avatar } from './ui/avatar'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,6 +11,7 @@ import CreatePost from './ui/createPost'
 import { setPosts, setSelectedPost } from '@/redux/postSlice'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Button } from './ui/Button'
+import { setLikeNotifications } from '@/redux/rtnSlice'
 // import store from '../redux/store.js/'   // No need bcz useSelector automatically uses the default Store from the Provider in main.jsx
 
 function LeftSideBar() {
@@ -96,10 +97,10 @@ function LeftSideBar() {
                                                         <div>
                                                             {
                                                                 likeNotifications.length==0 ? (<p>No new notifications</p>) : (
-                                                                    likeNotifications.map((notification)=>{
-                                                                        console.log("notification.userDetails inside popover",notification);
+                                                                    likeNotifications.map((notification,index)=>{
+                                                                        // console.log("notification.userDetails inside popover",notification);
                                                                         return(
-                                                                            <div key={notification?.userId} className='flex gap-4 items-center my-1'>
+                                                                            <div key={index} className='flex gap-4 items-center my-1' to={`/profile/${notification?.userId}`}>
                                                                                 <Avatar>
                                                                                     <AvatarImage src={notification?.profilePicture} className='w-full h-full'></AvatarImage>
                                                                                     <AvatarFallback>CN</AvatarFallback>
@@ -110,6 +111,13 @@ function LeftSideBar() {
                                                                     })
                                                                 )
                                                             }
+                                                            <Button onClick={()=>{
+                                                                        console.log("setlikenotification working in onclick");
+                                                                        dispatch(setLikeNotifications([])); 
+                                                                    }
+                                                                }
+                                                                className="bg-gray-100 h-6 w-30 mt-4 cursor-pointer">Mark as seen
+                                                            </Button>
                                                         </div>
                                                     </PopoverContent>
                                                 </Popover>

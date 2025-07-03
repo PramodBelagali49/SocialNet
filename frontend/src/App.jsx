@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SocketContext } from './context/socketContext.js'
 import { setOnlineUsers } from './redux/chatSlice'
 import { setLikeNotifications } from './redux/rtnSlice'
+import ProtectedRoutes from './components/ProtectedRoutes'
 
 function App() {
     const {user}=useSelector(store=>store.auth);
@@ -51,11 +52,11 @@ function App() {
   const browserRouter=createBrowserRouter([
     {
       path:"/",
-      element:<MainLayout/>,
+      element:<ProtectedRoutes><MainLayout/></ProtectedRoutes>,
       children:[
         {
           path:"/",
-          element:<Home/>
+          element:<ProtectedRoutes><Home/></ProtectedRoutes>
         },
         {
           path:"/profile/:id",

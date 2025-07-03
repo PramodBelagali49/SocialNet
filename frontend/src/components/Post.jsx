@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Dialog, DialogTrigger, DialogContent } from './ui/dialog'
-import { Badge, Bookmark, Heart, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
+import { Badge, Bookmark, BookmarkCheck, Heart, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { BookMarked } from 'lucide-react';
 import { Button } from './ui/Button'
 import CommentDialog from './CommentDialog'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,6 +20,7 @@ function Post({post}) {
     const dispatch=useDispatch();
     const [liked,setLiked]=useState(post.likes.includes(user?._id));
     const [comments,setComments]=useState(post.comments);
+    const [saved,setSaved]=useState("");
 
     const commentInputHandler=(e)=>{
         const inputText=e.target.value;
@@ -100,6 +102,7 @@ function Post({post}) {
         try {
             const res=await axios.patch(`http://localhost:3600/api/posts/${post?._id}/bookmarkPost`,{},{withCredentials:true});
             if(res.data.success){
+                setSaved(res.data.type);
                 toast.success(res.data.message);
             }
         } catch (error) {
@@ -159,8 +162,8 @@ function Post({post}) {
                 </div>
 
                 {
-                    user?.bookmarks?.includes(post?._id) ? (
-                        <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-500 bg-black'/>
+                    saved=="saved" ? (
+                        <BookmarkCheck onClick={bookmarkHandler} className="w-6 h-6 fill-current text-blue-500" />
                     ) : (
                         <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-500'/>
                     )

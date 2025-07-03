@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "./ui/Button";
 import { Label } from "./ui/Label";
 import { Input } from "./ui/Input";
@@ -8,7 +8,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAuthUser } from "@/redux/authSlice";
 
 const Signup=()=>{
@@ -56,7 +56,14 @@ const Signup=()=>{
         } finally{
             setLoading(false);
         }
-    } 
+    }
+
+    const {user}=useSelector(store=>store.auth);
+    useEffect(()=>{
+        if(user){
+            navigate("/");
+        }
+    },[])
 
     return(
         <div className="flex items-center w-screen h-screen justify-center">
