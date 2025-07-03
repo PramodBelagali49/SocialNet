@@ -23,7 +23,7 @@ function App() {
     useEffect(()=>{
       let socketio;
       if(user){
-          socketio=io("http://localhost:3600",{
+          socketio=io("https://socialnet-sfz6.onrender.com",{
             query:{
               userId:user?._id
             },

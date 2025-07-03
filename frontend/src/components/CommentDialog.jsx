@@ -34,7 +34,7 @@ function CommentDialog({commentIconClicked,setCommentIconClicked}) {
 
   const commentHandler=async()=>{
         try {
-            const res=await axios.post(`http://localhost:3600/api/posts/${selectedPost._id}/addComment`,{text},{
+            const res=await axios.post(`https://socialnet-sfz6.onrender.com/api/posts/${selectedPost._id}/addComment`,{text},{
                 headers:{"Content-Type":"application/json"},
                 withCredentials:true
             });

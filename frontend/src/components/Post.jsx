@@ -34,7 +34,7 @@ function Post({post}) {
     
     const commentHandler=async()=>{
         try {
-            const res=await axios.post(`http://localhost:3600/api/posts/${post._id}/addComment`,{text},{
+            const res=await axios.post(`https://socialnet-sfz6.onrender.com/api/posts/${post._id}/addComment`,{text},{
                 headers:{"Content-Type":"application/json"},
                 withCredentials:true
             });
@@ -66,7 +66,7 @@ function Post({post}) {
 
     const deletePostHandler=async()=>{
         try {
-            const res=await axios.delete(`http://localhost:3600/api/posts/${post._id}/deletePost`,{withCredentials:true});
+            const res=await axios.delete(`https://socialnet-sfz6.onrender.com/api/posts/${post._id}/deletePost`,{withCredentials:true});
             if(res.data.success){
                 const remainingPosts=posts.filter(postItem=>postItem._id !== post._id);
                 dispatch(setPosts(remainingPosts));
@@ -81,7 +81,7 @@ function Post({post}) {
     const likeOrDislikeHandler=async()=>{
         try {
             let action = liked ? "unlikePost" : "likePost"
-            const res=await axios.patch(`http://localhost:3600/api/posts/${post._id}/${action}`,{},{withCredentials:true});
+            const res=await axios.patch(`https://socialnet-sfz6.onrender.com/api/posts/${post._id}/${action}`,{},{withCredentials:true});
             if(res.data.success){
                 toast.success(res.data.message);
                 setLiked(!liked);
@@ -101,7 +101,7 @@ function Post({post}) {
 
     const bookmarkHandler=async()=>{
         try {
-            const res=await axios.patch(`http://localhost:3600/api/posts/${post?._id}/bookmarkPost`,{},{withCredentials:true});
+            const res=await axios.patch(`https://socialnet-sfz6.onrender.com/api/posts/${post?._id}/bookmarkPost`,{},{withCredentials:true});
             if(res.data.success){
                 setSaved(res.data.type);
                 toast.success(res.data.message);

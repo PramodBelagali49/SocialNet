@@ -17,7 +17,7 @@ function ChatPage() {
     const [textMessage,setTextMessage]=useState("");
 
     const messageHandler=async()=>{
-        const res=await axios.post(`http://localhost:3600/api/messages/send/${selectedUserForChat?._id}`,{message:textMessage},{
+        const res=await axios.post(`https://socialnet-sfz6.onrender.com/api/messages/send/${selectedUserForChat?._id}`,{message:textMessage},{
             headers:{
                 "Content-Type":"application/json"
             },

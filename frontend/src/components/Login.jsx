@@ -31,7 +31,7 @@ const Login=()=>{
         // console.log("Input : ",input);
         try {
             setLoading(true);
-            const res=await axios.post("http://localhost:3600/api/user/login",
+            const res=await axios.post("https://socialnet-sfz6.onrender.com/api/user/login",
                 input,
                 {
                     headers:{

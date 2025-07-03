@@ -8,7 +8,7 @@ export const useGetAllSuggestedUsers=()=>{
     useEffect(()=>{
         const fetchSuggestions=async()=>{
             try {
-                const res=await axios.get("http://localhost:3600/api/user/suggested",{withCredentials:true});
+                const res=await axios.get("https://socialnet-sfz6.onrender.com/api/user/suggested",{withCredentials:true});
                 if(res.data.success){
                     // console.log(res.data.users);
                     dispatch(setSuggestedUsers(res.data.users));

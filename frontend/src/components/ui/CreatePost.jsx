@@ -35,7 +35,7 @@ function CreatePost({createIconClicked,setCreateIconClicked}) {
         if(imagePreview) formdata.append("image",file);
         try {
             setLoading(true);
-            const res=await axios.post("http://localhost:3600/api/posts",formdata,{
+            const res=await axios.post("https://socialnet-sfz6.onrender.com/api/posts",formdata,{
                 headers:{
                     "Content-Type":"multipart/form-data"
                 },

@@ -8,7 +8,7 @@ export const useGetUserProfile=(userId)=>{
     useEffect(()=>{
         const fetchUserProfile=async()=>{
             try {
-                const res=await axios.get(`http://localhost:3600/api/user/${userId}/profile`,{withCredentials:true});
+                const res=await axios.get(`https://socialnet-sfz6.onrender.com/api/user/${userId}/profile`,{withCredentials:true});
                 if(res.data.success){
                     // console.log(res.data.user);
                     dispatch(setUserProfile(res.data.user));

@@ -9,7 +9,7 @@ export const useGetAllMessages=()=>{
     useEffect(()=>{
         const fetchAllMessages=async()=>{
             try {
-                const res=await axios.get(`http://localhost:3600/api/messages/all/${selectedUserForChat?._id}`,{withCredentials:true});
+                const res=await axios.get(`https://socialnet-sfz6.onrender.com/api/messages/all/${selectedUserForChat?._id}`,{withCredentials:true});
                 if(res.data.success){
                     // console.log(res.data.messages);
                     dispatch(setMessages(res.data.messages));

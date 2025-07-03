@@ -8,7 +8,7 @@ export const useGetAllPosts=()=>{
     useEffect(()=>{
         const fetchAllPosts=async()=>{
             try {
-                const res=await axios.get("http://localhost:3600/api/posts",{withCredentials:true});
+                const res=await axios.get("https://socialnet-sfz6.onrender.com/api/posts",{withCredentials:true});
                 if(res.data.success){
                     // console.log(res.data.posts);
                     dispatch(setPosts(res.data.posts));
