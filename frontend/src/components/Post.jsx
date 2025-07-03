@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Dialog, DialogTrigger, DialogContent } from './ui/dialog'
-import { Badge, Bookmark, BookmarkCheck, Heart, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { BookMarked } from 'lucide-react';
+import { Badge, Bookmark, BookmarkCheck, Heart, MessageCircle, MoreHorizontal, Send, FaHeart, FaRegHeart } from 'lucide-react'
+// import { FaHeart, FaRegHeart } from "react-icons/fa";
+// import { BookMarked } from 'lucide-react';
+
 import { Button } from './ui/Button'
 import CommentDialog from './CommentDialog'
 import { useDispatch, useSelector } from 'react-redux'
